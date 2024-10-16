@@ -9,6 +9,13 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: theme('colors.lightBackground');
+  color: theme('colors.lightText');
+}
+
+body.dark {
+  background-color: theme('colors.darkBackground');
+  color: theme('colors.darkText');
 }
 
 code {
