@@ -4,38 +4,53 @@ import HomePage from './pages/HomePage';
 import './App.css';
 import SchedulePage from './pages/SchedulePage';
 import SettingsPage from './pages/SettingsPage';
+import { Context, initialValue } from './context';
+import Loading from './components/Loading';
 
 function App() {
-  const [mode, setMode] = useState(() => {
-    const savedMode = localStorage.getItem('mode')
-    return savedMode ? savedMode : 'light'; // Default is 'light' if no saved theme
-  });
+  const [userData, setUserData] = useState(initialValue.userData);
+  const [isLoading, setLoading] = useState(initialValue.isLoading);
 
+  const getters = { userData, isLoading };
+  const setters = { setUserData, setLoading };
+
+  // Retrieve user data from local storage
   useEffect(() => {
-    if (mode === 'dark') {
-      document.documentElement.classList.add('dark');
-      document.documentElement.classList.remove('light');
-    } else if (mode === 'light') {
-      document.documentElement.classList.add('light');
-      document.documentElement.classList.remove('dark');
+    setters.setLoading(true)
+    const localStorageUserData = localStorage.getItem('userData');
+    if (localStorageUserData) {
+      console.log("localstoragedata already exists")
+      setters.setUserData(JSON.parse(localStorageUserData));
+      console.log("localstoragedata: ", JSON.parse(getters.userData))
+    } else {
+      console.log("localstoragedata does not exist")
+      // Set default user data if none exists in local storage
+      let defaultUserData = {
+        tasks: [],
+        mode: "light",
+      };
+      setters.setUserData(defaultUserData);
+      localStorage.setItem('userData', JSON.stringify(defaultUserData));
     }
-    localStorage.setItem('mode', mode);
-  }, [mode]);
+    setters.setLoading(false);
+  }, []);
 
-  const toggleMode = () => {
-    setMode((prevMode) => (prevMode === 'light' ? 'dark' : 'light'));
-  };
+  if (getters.isLoading) {
+    return <Loading />;
+  }
 
   return (
-    <div className={`min-h-screen ${mode === 'dark' ? 'bg-darkBackground text-lightText' : 'bg-lightBackground text-darkText'}`}>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<HomePage mode={mode} />} />
-          <Route path="/schedule" element={<SchedulePage mode={mode} />} />
-          <Route path="/settings" element={<SettingsPage mode={mode} toggleMode={toggleMode} />} />
-        </Routes>
-      </BrowserRouter>
-    </div>
+    <Context.Provider value={{ getters, setters }}>
+      <div className={`min-h-screen ${userData.mode === 'dark' ? 'bg-darkBackground text-lightText' : 'bg-lightBackground text-darkText'}`}>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/schedule" element={<SchedulePage />} />
+            <Route path="/settings" element={<SettingsPage />} />
+          </Routes>
+        </BrowserRouter>
+      </div>
+    </Context.Provider>
   );
 }
 
