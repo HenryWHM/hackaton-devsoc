@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Context } from '../context';
+import '../styles/SchedulePage.css';  // Adjust the path accordingly
 
 const SchedulePage = () => {
   const { getters } = useContext(Context);
@@ -44,7 +45,7 @@ const SchedulePage = () => {
             onChange={(e) => setNewTask(e.target.value)}
           />
           <input
-            className="w-full sm:w-48 p-2 border border-gray-300 dark:border-gray-700 rounded-md"
+            className="w-full sm:w-48 p-2 border border-gray-300 dark:border-gray-700 rounded-md bg-white dark:bg-gray-900 text-black dark:text-white"
             type="time"
             value={newTime}
             onChange={(e) => setNewTime(e.target.value)}
