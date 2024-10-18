@@ -40,14 +40,14 @@ const SettingsPage = () => {
 
   return (
     <div className={`min-h-screen ${getters.userData.mode === 'dark' ? 'bg-darkBackground text-lightText' : 'bg-lightBackground text-darkText'} py-10`}>
-      <div className="max-w-3xl mx-auto p-8 bg-white dark:bg-gray-800 shadow-lg rounded-lg">
+      <div className="max-w-3xl mx-auto p-8 bg-white dark:bg-black text-black dark:text-white shadow-lg rounded-lg">
         <h1 className="text-4xl font-bold mb-8">Settings Page</h1>
 
         {/* Username Setting */}
         <div className="mb-8">
           <h2 className="text-2xl font-semibold mb-4">Update Username</h2>
           <input
-            className="p-2 border border-gray-300 dark:border-gray-700 rounded-md mb-4 w-full"
+            className="p-2 border border-gray-300 dark:border-gray-700 rounded-md mb-4 w-full bg-white text-black dark:bg-gray-900 dark:text-white"
             type="text"
             placeholder="Enter your username"
             value={username}
