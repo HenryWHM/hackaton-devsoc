@@ -1,25 +1,103 @@
-import React from 'react'
-import { useNavigate } from 'react-router-dom'
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Context, useContext } from '../context';
 
 const SettingsPage = () => {
   const { getters, setters } = useContext(Context);
   const navigate = useNavigate();
+  const [username, setUsername] = useState(getters.userData.username || 'User');
+  const [notificationsEnabled, setNotificationsEnabled] = useState(getters.userData.notificationsEnabled || false);
 
+  // Toggle dark/light mode
   const toggleMode = () => {
-    setters.setUserData((prevUserData) => ({ ...prevUserData, mode: prevUserData.mode === 'light' ? 'dark' : 'light' }));
+    setters.setUserData((prevUserData) => ({
+      ...prevUserData,
+      mode: prevUserData.mode === 'light' ? 'dark' : 'light',
+    }));
+  };
+
+  // Handle username change
+  const handleUsernameChange = () => {
+    if (username) {
+      setters.setUserData((prevUserData) => ({
+        ...prevUserData,
+        username: username,
+      }));
+      alert('Username updated successfully!');
+    } else {
+      alert('Please enter a valid username.');
+    }
+  };
+
+  // Toggle notifications
+  const toggleNotifications = () => {
+    setNotificationsEnabled((prev) => !prev);
+    setters.setUserData((prevUserData) => ({
+      ...prevUserData,
+      notificationsEnabled: !prevUserData.notificationsEnabled,
+    }));
   };
 
   return (
-    <div className={`min-h-screen ${getters.userData.mode === 'dark' ? 'bg-darkBackground text-lightText' : 'bg-lightBackground text-darkText'}`}>
-      <h1 className={`text-3xl font-bold underline ${getters.userData.mode === 'dark' ? 'text-lightText' : 'text-darkText'}`}>Settings Page</h1>
-      <button className="mt-4 p-2 bg-blue-500 text-white dark:bg-darkAccent rounded" onClick={() => navigate("/")}>Home</button>
-      <br />
-      <button className="mt-4 p-2 bg-blue-500 text-white dark:bg-darkAccent rounded" onClick={toggleMode}>
-        {getters.userData.mode === 'light' ? 'Dark Mode' : 'Light Mode'}
-      </button>
-    </div>
-  )
-}
+    <div className={`min-h-screen ${getters.userData.mode === 'dark' ? 'bg-darkBackground text-lightText' : 'bg-lightBackground text-darkText'} py-10`}>
+      <div className="max-w-3xl mx-auto p-8 bg-white dark:bg-black text-black dark:text-white shadow-lg rounded-lg">
+        <h1 className="text-4xl font-bold mb-8">Settings Page</h1>
 
-export default SettingsPage
+        {/* Username Setting */}
+        <div className="mb-8">
+          <h2 className="text-2xl font-semibold mb-4">Update Username</h2>
+          <input
+            className="p-2 border border-gray-300 dark:border-gray-700 rounded-md mb-4 w-full bg-white text-black dark:bg-gray-900 dark:text-white"
+            type="text"
+            placeholder="Enter your username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+          <button
+            className="px-6 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 dark:bg-darkAccent dark:hover:bg-gray-700 transition"
+            onClick={handleUsernameChange}
+          >
+            Save Username
+          </button>
+        </div>
+
+        {/* Mode Toggle */}
+        <div className="mb-8">
+          <h2 className="text-2xl font-semibold mb-4">Display Mode</h2>
+          <button
+            className="px-6 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 dark:bg-darkAccent dark:hover:bg-gray-700 transition"
+            onClick={toggleMode}
+          >
+            {getters.userData.mode === 'light' ? 'Enable Dark Mode' : 'Enable Light Mode'}
+          </button>
+        </div>
+
+        {/* Notifications Toggle */}
+        <div className="mb-8">
+          <h2 className="text-2xl font-semibold mb-4">Notifications</h2>
+          <label className="flex items-center space-x-3">
+            <input
+              type="checkbox"
+              className="form-checkbox h-5 w-5 text-blue-600 dark:text-darkAccent"
+              checked={notificationsEnabled}
+              onChange={toggleNotifications}
+            />
+            <span className="text-lg">Enable Notifications</span>
+          </label>
+        </div>
+
+        {/* Navigate Back to Home */}
+        <div className="mt-10">
+          <button
+            className="px-6 py-2 bg-gray-500 text-white rounded-lg shadow-md hover:bg-gray-600 transition dark:bg-darkAccent dark:hover:bg-gray-700"
+            onClick={() => navigate('/')}
+          >
+            Go Back Home
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default SettingsPage;
