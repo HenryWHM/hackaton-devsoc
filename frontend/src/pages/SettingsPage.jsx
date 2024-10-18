@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Context, useContext } from '../context';
 
@@ -7,6 +7,14 @@ const SettingsPage = () => {
   const navigate = useNavigate();
   const [username, setUsername] = useState(getters.userData.username || 'User');
   const [notificationsEnabled, setNotificationsEnabled] = useState(getters.userData.notificationsEnabled || false);
+
+useEffect(() => {
+  if (getters.userData.mode === 'dark') {
+    document.documentElement.classList.add('dark');
+  } else {
+    document.documentElement.classList.remove('dark');
+  }
+}, [getters.userData.mode]);
 
   // Toggle dark/light mode
   const toggleMode = () => {
@@ -89,7 +97,7 @@ const SettingsPage = () => {
         {/* Navigate Back to Home */}
         <div className="mt-10">
           <button
-            className="px-6 py-2 bg-gray-500 text-white rounded-lg shadow-md hover:bg-gray-600 transition dark:bg-darkAccent dark:hover:bg-gray-700"
+            className="px-6 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 dark:bg-darkAccent dark:hover:bg-gray-700 transition"
             onClick={() => navigate('/')}
           >
             Go Back Home

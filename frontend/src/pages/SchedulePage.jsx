@@ -37,7 +37,7 @@ const SchedulePage = () => {
         <h2 className="text-2xl font-bold mb-4">Add a New Task</h2>
         <div className="flex flex-col sm:flex-row items-center gap-4 mb-4">
           <input
-            className="w-full p-2 border border-gray-300 dark:border-gray-700 rounded-md"
+            className="p-2 border border-gray-300 dark:border-gray-700 rounded-md mb-4 w-full bg-white text-black dark:bg-gray-900 dark:text-white"
             type="text"
             placeholder="Task Title"
             value={newTask}
@@ -85,7 +85,7 @@ const SchedulePage = () => {
 
       {/* Navigate Back to Home Page */}
       <button
-        className="mt-8 px-6 py-2 bg-gray-500 text-white rounded-lg shadow-md hover:bg-gray-600 transition dark:bg-darkAccent dark:hover:bg-gray-700"
+        className="mt-8 px-6 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 transition dark:bg-darkAccent dark:hover:bg-gray-700"
         onClick={() => navigate("/")}
       >
         Go Back Home
