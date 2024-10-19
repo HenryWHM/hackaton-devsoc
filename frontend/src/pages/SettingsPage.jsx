@@ -39,11 +39,19 @@ useEffect(() => {
 
   // Toggle notifications
   const toggleNotifications = () => {
-    setNotificationsEnabled((prev) => !prev);
-    setters.setUserData((prevUserData) => ({
-      ...prevUserData,
-      notificationsEnabled: !prevUserData.notificationsEnabled,
-    }));
+    const confirmToggle = window.confirm(
+      notificationsEnabled
+        ? 'Are you sure you want to disable notifications?'
+        : 'Do you want to enable notifications?'
+      );
+
+      if (confirmToggle) {
+        setNotificationsEnabled((prev) => !prev);
+        setters.setUserData((prevUserData) => ({
+          ...prevUserData,
+          notificationsEnabled: !prevUserData.notificationsEnabled,
+        }));
+      }
   };
 
   return (

@@ -9,15 +9,19 @@ const SchedulePage = () => {
 
   // State for managing the new schedule input and the list of schedules
   const [newTask, setNewTask] = useState('');
+  const [newCourse, setNewCourse] = useState('');
   const [newTime, setNewTime] = useState('');
+  const [newDate, setNewDate] = useState('');
   const [scheduleList, setScheduleList] = useState([]);
 
   // Add new task to the schedule list
   const handleAddTask = () => {
     if (newTask && newTime) {
-      const newSchedule = { task: newTask, time: newTime };
+      const newSchedule = { task: newTask, course: newCourse, date: newDate, time: newTime };
       setScheduleList([...scheduleList, newSchedule]);
       setNewTask('');  // Clear input fields after adding
+      setNewCourse('');
+      setNewDate('');
       setNewTime('');
     }
   };
@@ -33,19 +37,32 @@ const SchedulePage = () => {
       {/* Page Title */}
       <h1 className="text-5xl font-extrabold mb-8">Your Schedule</h1>
 
-      {/* Input for Task and Time */}
+      {/* Input for Task, Date and Time */}
       <div className="w-full max-w-xl bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 mb-6">
         <h2 className="text-2xl font-bold mb-4">Add a New Task</h2>
-        <div className="flex flex-col sm:flex-row items-center gap-4 mb-4">
+        <div className="flex flex-col gap-4 mb-4">
           <input
-            className="p-2 border border-gray-300 dark:border-gray-700 rounded-md mb-4 w-full bg-white text-black dark:bg-gray-900 dark:text-white"
+            className="p-2 border border-gray-300 dark:border-gray-700 rounded-md mb-4 w-full bg-white text-black dark:bg-gray-900 dark:text-white w-full"
             type="text"
             placeholder="Task Title"
             value={newTask}
             onChange={(e) => setNewTask(e.target.value)}
           />
           <input
-            className="w-full sm:w-48 p-2 border border-gray-300 dark:border-gray-700 rounded-md bg-white dark:bg-gray-900 text-black dark:text-white"
+            className="p-2 border border-gray-300 dark:border-gray-700 rounded-md mb-4 w-full bg-white text-black dark:bg-gray-900 dark:text-white w-full"
+            type="text"
+            placeholder="Course Title"
+            value={newCourse}
+            onChange={(e) => setNewCourse(e.target.value)}
+          />
+          <input
+            className="w-full sm:w-48 p-2 border border-gray-300 dark:border-gray-700 rounded-md bg-white dark:bg-gray-900 text-black dark:text-white w-full"
+            type="date"
+            value={newDate}
+            onChange={(e) => setNewDate(e.target.value)}
+          />
+          <input
+            className="w-full sm:w-48 p-2 border border-gray-300 dark:border-gray-700 rounded-md bg-white dark:bg-gray-900 text-black dark:text-white w-full"
             type="time"
             value={newTime}
             onChange={(e) => setNewTime(e.target.value)}
@@ -70,6 +87,8 @@ const SchedulePage = () => {
               <li key={index} className="flex justify-between items-center p-4 bg-gray-50 dark:bg-gray-900 rounded-md">
                 <div>
                   <p className="font-semibold text-lg">{item.task}</p>
+                  <p className="font-semibold text-lg">{item.course}</p>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">{item.date}</p>
                   <p className="text-sm text-gray-600 dark:text-gray-400">{item.time}</p>
                 </div>
                 <button
